@@ -2,7 +2,9 @@
 
 var contUser = 0;
 
-var employee = {
+var employees = [];
+
+/*var employee = {
     idUser: [],
     completeName: [],
     email: [],
@@ -12,7 +14,8 @@ var employee = {
     {
         this.age[positionUser] = 2020 - this.birthYear[positionUser]; 
     }
-};
+};*/
+
 
 initial();
 
@@ -23,8 +26,8 @@ function initial()
 
 function addElementTr()
 {
-
     var tr = document.createElement('tr');
+    tr.classList.add('tr-'+ contUser);
     document.getElementById('tbody').appendChild(tr);
     addElementTd(tr)
 }
@@ -57,8 +60,8 @@ function addElementInput(i)
             input.classList.add('Email-'+ contUser);
         break;
         case 4:
-            input.placeholder = 'Birth Year';
-            input.classList.add('Year-'+ contUser);
+            input.placeholder = 'mm/dd/yyyy';
+            input.classList.add('BirthDate-'+ contUser);
         break;
     }
     return input;
@@ -78,28 +81,41 @@ document.querySelector('.btn-edit').addEventListener('click', function() {
     display(idUser);
 });
 
-document.querySelector('.btn-remove').addEventListener('click', function() {
-    
-});
+/*document.querySelector('.btn-delete').addEventListener('click', function() {
+    if (contUser != 0) {
+    var idUser = prompt('Please enter with Id user');
+    document.querySelector('.tr-' + idUser).remove();
+    }
+});*/
 
 function addEmployeer() {
-    employee.idUser[contUser] = contUser;
-    employee.completeName[contUser] = document.querySelector('.Name-'+ contUser).value;
-    employee.email[contUser] = document.querySelector('.Email-'+ contUser).value;
-    employee.birthYear[contUser] = document.querySelector('.Year-'+ contUser).value;
-    employee.calcAge(contUser);
+    employees[contUser] = {};
+    employees[contUser].name = document.querySelector('.Name-'+ contUser).value;
+    employees[contUser].email = document.querySelector('.Email-'+ contUser).value;
+    employees[contUser].birthDate = document.querySelector('.BirthDate-'+ contUser).value;
+    calcAge(contUser);
 }
 
 function updateEmployeer(idUser) {
-    employee.completeName[idUser] = document.querySelector('.Name-'+ idUser).value;
-    employee.email[idUser] = document.querySelector('.Email-'+ idUser).value;
-    employee.birthYear[idUser] = document.querySelector('.Year-'+ idUser).value;
-    employee.calcAge(idUser);
+    employees[idUser].name = document.querySelector('.Name-'+ idUser).value;
+    employees[idUser].email = document.querySelector('.Email-'+ idUser).value;
+    employees[idUser].birthDate = document.querySelector('.BirthDate-'+ idUser).value;
+    calcAge(idUser);
 }
 
 function display(user) {
-    document.querySelector('.Name-'+ user).value = employee.completeName[user];
-    document.querySelector('.Email-'+ user).value = employee.email[user];
-    document.querySelector('.Year-'+ user).value = employee.age[user];
+    document.querySelector('.Name-'+ user).value = employees[user].name;
+    document.querySelector('.Email-'+ user).value = employees[user].email;
+    document.querySelector('.BirthDate-'+ user).value = employees[user].age;
 }
 
+function calcAge(idUser) {
+    var dateToday = new Date();
+    var birthDate = new Date(employees[idUser].birthDate);
+    var age = dateToday.getFullYear() - birthDate.getFullYear();
+    var month = dateToday.getMonth() - birthDate.getMonth();
+    if (month < 0 || month === 0 &&  dateToday.getMonth() < birthDate.getMonth()) {
+        age--;
+    }
+    employees[idUser].age = age;
+}

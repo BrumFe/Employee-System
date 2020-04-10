@@ -71,7 +71,6 @@ function addElementInput(i)
 
 function addElementButton(td) {
     var button, addClassButton;
-    
     for(var i = 0; i < 3; i++) {   
         button = document.createElement('button');
         addClassButton = button.classList;
@@ -79,7 +78,7 @@ function addElementButton(td) {
         addClassButton.add('btn-default');
         addClassButton.add('btn-circle');
         if (i === 0) {
-            addClassButton.add('btn-add-'+ contUser);
+            addClassButton.add('btn-add');
         } else if (i === 1) {
             addClassButton.add('btn-edit-'+ contUser);
         } else {
@@ -105,40 +104,25 @@ function addElementIcon(cont) {
     return icon; 
 }
 
-document.querySelector('.btn-add-'+ contUser).addEventListener('click', function() {   
-    addEmployeer();
-    display(contUser);
+document.querySelector('.btn-add').addEventListener('click',);
+
+function addEmployeer(cont) {
+    employees[cont] = {};
+    employees[cont].name = document.querySelector('.Name-'+ cont).value;
+    employees[cont].email = document.querySelector('.Email-'+ cont).value;
+    employees[cont].birthDate = document.querySelector('.BirthDate-'+ cont).value;
+    calcAge(cont);
+    display(cont);
     contUser++;
     addElementTr();
-});
-
-document.querySelector('.btn-edit').addEventListener('click', function() {
-    var idUser = prompt('Please enter with Id user');
-    updateEmployeer(idUser);
-    display(idUser);
-});
-
-/*document.querySelector('.btn-delete').addEventListener('click', function() {
-    if (contUser != 0) {
-    var idUser = prompt('Please enter with Id user');
-    document.querySelector('.tr-' + idUser).remove();
-    }
-});*/
-
-function addEmployeer() {
-    employees[contUser] = {};
-    employees[contUser].name = document.querySelector('.Name-'+ contUser).value;
-    employees[contUser].email = document.querySelector('.Email-'+ contUser).value;
-    employees[contUser].birthDate = document.querySelector('.BirthDate-'+ contUser).value;
-    calcAge(contUser);
 }
 
-function updateEmployeer(idUser) {
+/*function updateEmployeer(idUser) {
     employees[idUser].name = document.querySelector('.Name-'+ idUser).value;
     employees[idUser].email = document.querySelector('.Email-'+ idUser).value;
     employees[idUser].birthDate = document.querySelector('.BirthDate-'+ idUser).value;
     calcAge(idUser);
-}
+}*/
 
 function display(user) {
     document.querySelector('.Name-'+ user).value = employees[user].name;

@@ -4,19 +4,6 @@ var contUser = 0;
 
 var employees = [];
 
-/*var employee = {
-    idUser: [],
-    completeName: [],
-    email: [],
-    birthYear: [],
-    age: [],
-    calcAge: function(positionUser) 
-    {
-        this.age[positionUser] = 2020 - this.birthYear[positionUser]; 
-    }
-};*/
-
-
 initial();
 
 function initial()

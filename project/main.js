@@ -104,7 +104,7 @@ function addElementIcon(cont) {
     return icon; 
 }
 
-document.querySelector('.btn-add').addEventListener('click',);
+document.querySelector('.btn-add-'+contUser).addEventListener('click',);
 
 function addEmployeer(cont) {
     employees[cont] = {};

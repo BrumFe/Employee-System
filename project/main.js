@@ -90,15 +90,10 @@ function addEmployeer() {
 }
 
 function updateEmployeer(idUser) {
-        employees[idUser].name = document.querySelector('.Name-'+ idUser).value;
-        employees[idUser].email = document.querySelector('.Email-'+ idUser).value;
-        birthDate = document.querySelector('.BirthDate-'+ idUser).value;
-        if ( birthDate === employees[idUser].age) {
-            console.log('this works!');
-        } else {
-            employees[idUser].birthDate = birthDate;
-            calcAge(idUser);
-        }
+    employees[idUser].name = document.querySelector('.Name-'+ idUser).value;
+    employees[idUser].email = document.querySelector('.Email-'+ idUser).value;
+    employees[idUser].birthDate = document.querySelector('.BirthDate-'+ idUser).value;
+    updateAge(idUser);
 }
 
 function display(user) {
@@ -110,14 +105,18 @@ function display(user) {
 function calcAge(employee) {
     if (employees[employee].birthDate === '') {
         employees[employee].birthDate = new Date();
-    } 
-    var dateToday = new Date();
-    var birthDate = new Date(employees[employee].birthDate);
-    var age = dateToday.getFullYear() - birthDate.getFullYear();
-    var month = dateToday.getMonth() - birthDate.getMonth();
-    var day = dateToday.getDay() - birthDate.getDay();
-    if (month < 0 || day < 0|| (day === 0 || month === 0 && dateToday.getDate() < birthDate.getDate())) {
-        age--;
-    }
-    employees[employee].age = age;   
+    } else {
+            var dateToday = new Date();
+            var birthDate = new Date(employees[employee].birthDate);
+            var age = dateToday.getFullYear() - birthDate.getFullYear();
+            var month = dateToday.getMonth() - birthDate.getMonth();
+            var day = dateToday.getDay() - birthDate.getDay();
+        if (month < 0 || day < 0|| (day === 0 || month === 0 && dateToday.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        employees[employee].age = age;
+    }   
+}
+
+function updateAge(employee) {
 }

@@ -29,6 +29,7 @@ function addElementTd(tr)
         if (i != 0 && i != 1) {
             td.appendChild(addElementInput(i));
         } else if (i == 1) {
+            td.classList.add('idUser-'+ contEmployees);
             td.textContent = contEmployees;
         } else {
             td.textContent = 'Actions'
@@ -66,22 +67,23 @@ document.querySelector('.btn-add').addEventListener('click', function() {
 });
 
 document.querySelector('.btn-edit').addEventListener('click', function() {
-    //var idUser = prompt('Employeer Id');
     for(var idUser = 0; idUser < contEmployees; idUser++) {
         updateEmployeer(idUser);
          display(idUser);
     }
 });
 
-/*document.querySelector('.btn-delete').addEventListener('click', function() {
+document.querySelector('.btn-delete').addEventListener('click', function() {
     if (contEmployees != 0) {
     var idUser = prompt('Please enter with Id user');
     document.querySelector('.tr-' + idUser).remove();
+    removeEmployeer(idUser);
     }
-});*/
+});
 
 function addEmployeer() {
     employees[contEmployees] = {};
+    employees[contEmployees].userId = contEmployees;
     employees[contEmployees].name = document.querySelector('.Name-'+ contEmployees).value;
     employees[contEmployees].email = document.querySelector('.Email-'+ contEmployees).value;
     birthDate = document.querySelector('.BirthDate-'+ contEmployees).value;
@@ -92,8 +94,26 @@ function addEmployeer() {
 function updateEmployeer(idUser) {
     employees[idUser].name = document.querySelector('.Name-'+ idUser).value;
     employees[idUser].email = document.querySelector('.Email-'+ idUser).value;
-    employees[idUser].birthDate = document.querySelector('.BirthDate-'+ idUser).value;
-    updateAge(idUser);
+    var birthDate = document.querySelector('.BirthDate-'+ idUser).value;
+    updateAge(idUser, birthDate);
+}
+
+function removeEmployeer(idUser) {
+    employees.splice(idUser, 1);
+    contEmployees--;
+    for(var j = 0; j < contEmployees; j++) {
+        employees[j].userId = j;
+    }
+
+    for(var i = 0; i < contEmployees; i++) {
+        var tdIduser = document.querySelector('.idUser-'+ i).value;
+        var catchUserID = employees[i].userId;
+        if (tdIduser === catchUserID) {
+
+        } else {
+            document.querySelector('.idUser-'+ i).value = employees[i].userId;
+        }
+    }
 }
 
 function display(user) {
@@ -104,19 +124,24 @@ function display(user) {
 
 function calcAge(employee) {
     if (employees[employee].birthDate === '') {
-        employees[employee].birthDate = new Date();
-    } else {
-            var dateToday = new Date();
-            var birthDate = new Date(employees[employee].birthDate);
-            var age = dateToday.getFullYear() - birthDate.getFullYear();
-            var month = dateToday.getMonth() - birthDate.getMonth();
-            var day = dateToday.getDay() - birthDate.getDay();
-        if (month < 0 || day < 0|| (day === 0 || month === 0 && dateToday.getDate() < birthDate.getDate())) {
-            age--;
-        }
-        employees[employee].age = age;
-    }   
+        employees[employee].birthDate = prompt('Please set employee\'s birth date!');
+    }
+    var dateToday = new Date();
+    var birthDate = new Date(employees[employee].birthDate);
+    var age = dateToday.getFullYear() - birthDate.getFullYear();
+    var month = dateToday.getMonth() - birthDate.getMonth();
+    var day = dateToday.getDay() - birthDate.getDay();
+    if (month < 0 || day < 0|| (day === 0 || month === 0 && dateToday.getDate() < birthDate.getDate())) {
+        age--;
+    }
+    employees[employee].age = age;   
 }
 
-function updateAge(employee) {
+function updateAge(employee, birth) {
+    if (birth.length < 4) {
+        return;
+    } else {
+        employees[employee].birthDate = birth;
+        calcAge(employee);
+    }
 }

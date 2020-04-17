@@ -2,10 +2,9 @@
 
 //var contEmployees = 0;
 
-var employees, contEmployees, birthDate;
+var employees, contEmployees, birthDate, verifyAddEmployeer;
 employees = [];
 contEmployees = employees.length;
-
 
 initial();
 
@@ -20,6 +19,7 @@ function addElementTr()
     tr.classList.add('tr-'+ contEmployees);
     document.getElementById('tbody').appendChild(tr);
     addElementTd(tr)
+    verifyAddEmployeer = true;
 }
 
 function addElementTd(tr)
@@ -59,11 +59,15 @@ function addElementInput(i)
 }
 
 
-document.querySelector('.btn-add').addEventListener('click', function() {   
-    addEmployeer();
-    display(contEmployees);
-    contEmployees++;
-    addElementTr();
+document.querySelector('.btn-add').addEventListener('click', function() {  
+    if (verifyAddEmployeer) {
+        addEmployeer();
+        display(contEmployees);
+        alert('Registered employee!');
+    } else {
+        contEmployees++;
+        addElementTr();
+    }
 });
 
 document.querySelector('.btn-edit').addEventListener('click', function() {
@@ -76,7 +80,6 @@ document.querySelector('.btn-edit').addEventListener('click', function() {
 document.querySelector('.btn-delete').addEventListener('click', function() {
     if (contEmployees != 0) {
     var idUser = prompt('Please enter with Id user');
-    document.querySelector('.tr-' + idUser).remove();
     removeEmployeer(idUser);
     }
 });
@@ -89,6 +92,7 @@ function addEmployeer() {
     birthDate = document.querySelector('.BirthDate-'+ contEmployees).value;
     employees[contEmployees].birthDate = birthDate;
     calcAge(contEmployees);
+    verifyAddEmployeer = false;
 }
 
 function updateEmployeer(idUser) {
@@ -101,18 +105,10 @@ function updateEmployeer(idUser) {
 function removeEmployeer(idUser) {
     employees.splice(idUser, 1);
     contEmployees--;
+    document.querySelector('.tr-'+ idUser).remove();
     for(var j = 0; j < contEmployees; j++) {
         employees[j].userId = j;
-    }
-
-    for(var i = 0; i < contEmployees; i++) {
-        var tdIduser = document.querySelector('.idUser-'+ i).value;
-        var catchUserID = employees[i].userId;
-        if (tdIduser === catchUserID) {
-
-        } else {
-            document.querySelector('.idUser-'+ i).value = employees[i].userId;
-        }
+        display(j);
     }
 }
 

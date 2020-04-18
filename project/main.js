@@ -60,7 +60,7 @@ document.querySelector('.call-form-add').addEventListener('click', function() {
     openForm();
 });
 document.querySelector('.btn-add-employee').addEventListener('click', function() {
-    if (isInputNotNull()) {
+    if (isInputNotNull() && isEmailValid()) {
         addEmployeer();
         addElementTr();
         display(contEmployees);
@@ -115,6 +115,20 @@ function isInputNotNull(){
     }
 }
 
+function isEmailValid() {
+    document.querySelector('.Email').classList.remove('has-error');
+    document.querySelector('.help-block').style.display = 'none';
+    var email = document.getElementById('Email').value;
+    for(var i = 0; i < email.length; i++) {
+        if (email[i] === '@') {
+            return true;
+        }
+    }
+    document.querySelector('.Email').classList.add('has-error');
+    document.querySelector('.help-block').style.display = 'block';
+    return false;
+}
+
 function addEmployeer() {
     employees[contEmployees] = {};
     employees[contEmployees].userId = contEmployees;
@@ -141,10 +155,10 @@ function removeEmployeer(idUser) {
     }
 }
 
-function display(user) {
-    document.querySelector('.Name-'+ user).textContent = employees[user].name;
-    document.querySelector('.Email-'+ user).textContent = employees[user].email;
-    document.querySelector('.Age-'+ user).textContent = employees[user].age;
+function display(idUser) {
+    document.querySelector('.Name-'+ idUser).textContent = employees[idUser].name;
+    document.querySelector('.Email-'+ idUser).textContent = employees[idUser].email;
+    document.querySelector('.Age-'+ idUser).textContent = employees[idUser].age;
 }
 
 function isAdult(idUser) {
@@ -155,23 +169,23 @@ function isAdult(idUser) {
     }
 }
 
-function calcAge(employee) {
+function calcAge(employeeId) {
     var dateToday = new Date();
-    var birthDate = new Date(employees[employee].birthDate);
+    var birthDate = new Date(employees[employeeId].birthDate);
     var age = dateToday.getFullYear() - birthDate.getFullYear();
     var month = dateToday.getMonth() - birthDate.getMonth();
     var day = dateToday.getDay() - birthDate.getDay();
     if (month < 0 || day < 0|| (day === 0 || month === 0 && dateToday.getDate() < birthDate.getDate())) {
         age--;
     }
-    employees[employee].age = age;   
+    employees[employeeId].age = age;   
 }
 
-function updateAge(employee, birth) {
+function updateAge(employeeId, birth) {
     if (birth.length < 4) {
         return;
     } else {
-        employees[employee].birthDate = birth;
+        employees[employeeId].birthDate = birth;
         calcAge(employee);
     }
 }

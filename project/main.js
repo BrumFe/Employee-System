@@ -92,6 +92,9 @@ function openForm() {
 
 function isInputNotNull(){
     var name, email, date;
+    document.querySelector('.Name').classList.remove('has-error');
+    document.querySelector('.Email').classList.remove('has-error');
+    document.querySelector('.Date').classList.remove('has-error');
     name = document.getElementById('Name').value;
     email = document.getElementById('Email').value;
     date = document.getElementById('BirthDate').value;
@@ -99,6 +102,15 @@ function isInputNotNull(){
     if (name !== '' && email !== '' && date !== '') {
         return true;
     } else {
+        if (name === "") {
+            document.querySelector('.Name').classList.add('has-error');
+        }
+        if (email === "") {
+            document.querySelector('.Email').classList.add('has-error');
+        }
+        if (date === "") {
+            document.querySelector('.Date').classList.add('has-error');
+        }
         return false;
     }
 }

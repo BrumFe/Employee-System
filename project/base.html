@@ -221,6 +221,31 @@
             </ol>
         </div>
     </div>
+
+    <div class="row form-add-employee" style="display:none;">
+        <div class="col-sm-12">
+            <div class="white-box p-l-20 p-r-20">
+                <h3 class="box-title m-b-30">Add Employee</h3>
+                <div class="row">
+                    <div class="col-md-12 floating-labels">
+                            <div class="form-group m-b-40">
+                                <input type="text" class="form-control" id="Name" required=""><span class="highlight"></span> <span class="bar"></span>
+                                <label for="input1">Employee Name</label>
+                            </div>
+                            <div class="form-group m-b-40">
+                                <input type="text" class="form-control" id="Email" required=""><span class="highlight"></span> <span class="bar"></span>
+                                <label for="input2">Employee Email</label>
+                            </div>
+                            <div class="form-group m-b-40">
+                                <input type="text" class="form-control" id="BirthDate" required=""><span class="highlight"></span> <span class="bar"></span>
+                                <label for="input3">Employee Birth Date (mm/dd/yyyy)</label>
+                            </div>
+                            <button class="btn btn-success btn-add-employee">Add Employee</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <div class="white-box">
         <h3 class="box-title">Employeers</h3>
@@ -229,7 +254,7 @@
                 <thead>
                     <tr class="tr-thead">
                         <th>
-                            <button class="btn btn-default btn-circle btn-add">
+                            <button class="btn btn-default btn-circle call-form-add">
                                 <i class="fa fa-plus"></i>
                             </button>
 
@@ -244,7 +269,7 @@
                         <th>#</th>
                         <th>Name</th>
                         <th>Email</th>
-                        <th>Birth Date</th>
+                        <th>Age</th>
                    
                     </tr>
                 </thead> 

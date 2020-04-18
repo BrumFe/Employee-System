@@ -2,33 +2,25 @@
 
 //var contEmployees = 0;
 
-var employees, contEmployees, birthDate, verifyAddEmployeer;
+var employees, contEmployees, birthDate;
 employees = [];
 contEmployees = employees.length;
-
-initial();
-
-function initial()
-{
-    addElementTr();
-}
 
 function addElementTr()
 {
     var tr = document.createElement('tr');
     tr.classList.add('tr-'+ contEmployees);
     document.getElementById('tbody').appendChild(tr);
-    addElementTd(tr)
-    verifyAddEmployeer = true;
+    addElementTd(tr);
 }
 
 function addElementTd(tr)
 { 
     for(var i = 0; i < 5; i++) {
         var td = document.createElement('td');  
-        if (i != 0 && i != 1) {
-            td.appendChild(addElementInput(i));
-        } else if (i == 1) {
+        if (i > 1) {
+            td.appendChild(addElementText(i));
+        } else if (i === 1) {
             td.classList.add('idUser-'+ contEmployees);
             td.textContent = contEmployees;
         } else {
@@ -38,35 +30,42 @@ function addElementTd(tr)
     }
 }
 
-function addElementInput(i)
+function addElementText(positionOnTr)
 { 
-    var input = document.createElement('input');
-    switch(i) {
+    var p = document.createElement('p');
+    var span = document.createElement('span');
+    switch(positionOnTr) {
         case 2:
-            input.placeholder = 'Name';
-            input.classList.add('Name-'+ contEmployees);
+            p.classList.add('Name-'+ contEmployees);
         break;
         case 3:
-            input.placeholder = 'Email';
-            input.classList.add('Email-'+ contEmployees);
+            p.classList.add('Email-'+ contEmployees);
         break;
         case 4:
-            input.placeholder = 'mm/dd/yyyy';
-            input.classList.add('BirthDate-'+ contEmployees);
+            span.classList.add('Age-'+ contEmployees);
+            span.classList.add('label');
+            if (isAdult(contEmployees)) {
+                span.classList.add('label-success');
+            } else {
+                span.classList.add('label-danger');
+            }
+            return span;
         break;
     }
-    return input;
+    return p;
 }
 
 
-document.querySelector('.btn-add').addEventListener('click', function() {  
-    if (verifyAddEmployeer) {
+document.querySelector('.call-form-add').addEventListener('click', function() {
+    openForm();
+});
+document.querySelector('.btn-add-employee').addEventListener('click', function() {
+    if (isInputNotNull()) {
         addEmployeer();
-        display(contEmployees);
-        alert('Registered employee!');
-    } else {
-        contEmployees++;
         addElementTr();
+        display(contEmployees);
+        document.querySelector('.form-add-employee').style.display = 'none';
+        contEmployees = employees.length;
     }
 });
 
@@ -84,15 +83,33 @@ document.querySelector('.btn-delete').addEventListener('click', function() {
     }
 });
 
+function openForm() {
+    document.getElementById('Name').value = '';
+    document.getElementById('Email').value = '';
+    document.getElementById('BirthDate').value = '';
+    document.querySelector('.form-add-employee').style.display = 'block';
+}
+
+function isInputNotNull(){
+    var name, email, date;
+    name = document.getElementById('Name').value;
+    email = document.getElementById('Email').value;
+    date = document.getElementById('BirthDate').value;
+
+    if (name !== '' && email !== '' && date !== '') {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function addEmployeer() {
     employees[contEmployees] = {};
     employees[contEmployees].userId = contEmployees;
-    employees[contEmployees].name = document.querySelector('.Name-'+ contEmployees).value;
-    employees[contEmployees].email = document.querySelector('.Email-'+ contEmployees).value;
-    birthDate = document.querySelector('.BirthDate-'+ contEmployees).value;
-    employees[contEmployees].birthDate = birthDate;
+    employees[contEmployees].name = document.getElementById('Name').value;
+    employees[contEmployees].email = document.getElementById('Email').value;
+    employees[contEmployees].birthDate = document.getElementById('BirthDate').value;
     calcAge(contEmployees);
-    verifyAddEmployeer = false;
 }
 
 function updateEmployeer(idUser) {
@@ -113,15 +130,20 @@ function removeEmployeer(idUser) {
 }
 
 function display(user) {
-        document.querySelector('.Name-'+ user).value = employees[user].name;
-        document.querySelector('.Email-'+ user).value = employees[user].email;
-        document.querySelector('.BirthDate-'+ user).value = employees[user].age;
+    document.querySelector('.Name-'+ user).textContent = employees[user].name;
+    document.querySelector('.Email-'+ user).textContent = employees[user].email;
+    document.querySelector('.Age-'+ user).textContent = employees[user].age;
+}
+
+function isAdult(idUser) {
+    if (employees[idUser].age >= 18) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 function calcAge(employee) {
-    if (employees[employee].birthDate === '') {
-        employees[employee].birthDate = prompt('Please set employee\'s birth date!');
-    }
     var dateToday = new Date();
     var birthDate = new Date(employees[employee].birthDate);
     var age = dateToday.getFullYear() - birthDate.getFullYear();

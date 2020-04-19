@@ -59,6 +59,10 @@ function addElementText(positionOnTr)
 document.querySelector('.call-form-add').addEventListener('click', function() {
     openForm();
 });
+
+document.querySelector('.hidden-form-add').addEventListener('click', function() {
+    document.querySelector('.form-add-employee').style.display = 'none';
+});
 document.querySelector('.btn-add-employee').addEventListener('click', function() {
     if (isInputNotNull() && isEmailValid()) {
         addEmployeer();

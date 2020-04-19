@@ -225,9 +225,12 @@
     <div class="row form-add-employee" style="display:none;">
         <div class="col-sm-12">
             <div class="white-box p-l-20 p-r-20">
+                <button type="button" class="btn btn-danger btn-circle hidden-form-add">
+                    <i class="fa fa-times"></i>
+                </button>
                 <h3 class="box-title m-b-30">Add Employee</h3>
                 <div class="row">
-                    <div class="col-md-12 floating-labels">
+                    <div class="col-md-12 form-material floating-labels">
                         <div class="form-group m-b-40 Name">
                             <input type="text" class="form-control" id="Name" required=""><span class="highlight"></span> <span class="bar"></span>
                             <label for="Name">Employee Name</label>
@@ -240,9 +243,10 @@
                         <div class="form-group m-b-40 Date">
                             <input type="date" class="form-control" id="BirthDate" required=""><span class="highlight"></span>
                             <span class="bar"></span>
+                            <!--<label for="BirthDate">Employee Date of Birth</label>-->
                         </div>
                         <div class="form-group m-b-40"> 
-                            <button type="submit" class="btn btn-success waves-effect waves-light m-r-10 btn-add-employee">Add Employee</button>
+                            <button type="submit" class="fcbtn btn btn-outline btn-1d btn-success waves-effect waves-light m-r-10 btn-add-employee">Add Employee</button>
                         </div>
                     </div>
                 </div>
@@ -262,7 +266,7 @@
                             </button>
 
                             <button class="btn btn-default btn-circle btn-edit">
-                                <i class="fa fa-refresh"></i>
+                                <i class="fa fa-spin fa-refresh"></i>
                             </button>
 
                             <button class="btn btn-default btn-circle       btn-delete">

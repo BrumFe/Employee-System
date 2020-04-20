@@ -123,21 +123,23 @@ function openFormUpdate() {
     document.getElementById('birthDate-update').value = '';
     document.getElementById('employeeId').value = '';
     document.querySelector('.form-update-employee').style.display = 'block';
+    document.querySelector('.invalid-id').style.display = 'none';   
+    document.querySelector('.employeeId').classList.remove('has-error');
     document.querySelector('.fa-refresh').classList.add('fa-spin');
 }
 
 document.querySelector('.btn-search-employee').addEventListener('click', function() {
-    document.querySelector('.display-form-update').style.display = 'block';
     document.querySelector('.invalid-id').style.display = 'none';   
     document.querySelector('.employeeId').classList.remove('has-error');
     var idUser = document.getElementById('employeeId').value;
 
-    if (idUser === '' || idUser > contEmployees) {
-        document.querySelector('.employeeId').classList.add('has-error'); 
-        document.querySelector('.invalid-id').style.display = 'block';    
-    } else {
-        searchEmployee(idUser);
+    if (isIdUserValid(idUser)) {
+        document.querySelector('.display-form-update').style.display = 'block';
+        searchEmployee(idUser)
     }
+
+    document.querySelector('.invalid-id').style.display = 'block';  
+    document.querySelector('.employeeId').classList.add('has-error');   
 });
 
 function searchEmployee(idUser) {
@@ -204,7 +206,14 @@ function removeEmployeer(idUser) {
 }
 
 
-
+function isIdUserValid(idUser) {
+    for (var i = 0; i < contEmployees; i++) {
+        if (idUser == employees[i].idUser) {
+            return true;
+        }
+    }
+    return false;
+}
 
 function isInputNotNull(){
     var name, email, date;

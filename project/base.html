@@ -231,22 +231,65 @@
                 <h3 class="box-title m-b-30">Add Employee</h3>
                 <div class="row">
                     <div class="col-md-12 form-material floating-labels">
-                        <div class="form-group m-b-40 Name">
-                            <input type="text" class="form-control" id="Name" required=""><span class="highlight"></span> <span class="bar"></span>
+                        <div class="form-group m-b-40 name-add">
+                            <input type="text" class="form-control" id="name-add" required=""><span class="highlight"></span> <span class="bar"></span>
                             <label for="Name">Employee Name</label>
                         </div>
-                        <div class="form-group m-b-40 Email">
-                            <input type="text" class="form-control" id="Email" required=""><span class="highlight"></span> <span class="bar"></span>
+                        <div class="form-group m-b-40 email-add">
+                            <input type="text" class="form-control" id="email-add" required=""><span class="highlight"></span> <span class="bar"></span>
                             <label for="Email">Employee Email</label>
-                            <span class="help-block" style="display: none;">Email invalid</span>
+                            <span class="help-block valid-email-1-add" style="display: none;">Email invalid</span>
+                            <span class="help-block valid-email-2-add" style="display: none;">Email is already in use!</span>
                         </div>
-                        <div class="form-group m-b-40 Date">
-                            <input type="date" class="form-control" id="BirthDate" required=""><span class="highlight"></span>
+                        <div class="form-group m-b-40 date-add">
+                            <input type="date" class="form-control" id="birthDate-add" required=""><span class="highlight"></span>
                             <span class="bar"></span>
                             <!--<label for="BirthDate">Employee Date of Birth</label>-->
                         </div>
                         <div class="form-group m-b-40"> 
                             <button type="submit" class="fcbtn btn btn-outline btn-1d btn-success waves-effect waves-light m-r-10 btn-add-employee">Add Employee</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row form-update-employee" style="display:none;">
+        <div class="col-sm-12">
+            <div class="white-box p-l-20 p-r-20">
+                <button type="button" class="btn btn-danger btn-circle hidden-form-update">
+                    <i class="fa fa-times"></i>
+                </button>
+                <h3 class="box-title m-b-30">Update Employee</h3>
+                <div class="row">
+                    <div class="col-md-12 form-material floating-labels">
+                        <div class="form-group m-b-40 employeeId">
+                            <input type="text" class="form-control" id="employeeId" required=""><span class="highlight"></span> <span class="bar"></span>
+                            <label for="Name">Employee Id</label>
+                            <span class="help-block invalid-id" style="display: none;">Invalid employee ID!</span>
+                        </div>
+                        <div class="form-group m-b-40"> 
+                            <button type="submit" class="fcbtn btn btn-outline btn-1d btn-info waves-effect waves-light m-r-10 btn-search-employee">Search Employee</button>
+                        </div>
+                        <div class="display-form-update" style="display: none;">
+                            <div class="form-group m-b-40 name-update">
+                                <input type="text" class="form-control" id="name-update" required=""><span class="highlight"></span> <span class="bar"></span>
+                                <label for="Name">Employee Name</label>
+                            </div>
+                            <div class="form-group m-b-40 email-update">
+                                <input type="text" class="form-control" id="email-update" required=""><span class="highlight"></span> <span class="bar"></span>
+                                <label for="Email">Employee Email</label>
+                                <span class="help-block valid-email-1-update" style="display: none;">Email invalid</span>
+                                <span class="help-block valid-email-2-update" style="display: none;">Email is already in use!</span>
+                            </div>
+                            <div class="form-group m-b-40 date-update">
+                                <input type="date" class="form-control" id="birthDate-update" required=""><span class="highlight"></span>
+                                <span class="bar"></span>
+                            </div>
+                            <div class="form-group m-b-40"> 
+                                <button type="submit" class="fcbtn btn btn-outline btn-1d btn-success waves-effect waves-light m-r-10 btn-update-employee">Update Employee</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -261,15 +304,15 @@
                 <thead>
                     <tr class="tr-thead">
                         <th>
-                            <button class="btn btn-default btn-circle call-form-add">
+                            <button class="btn btn-default btn-circle btn-call-form-add">
                                 <i class="fa fa-plus"></i>
                             </button>
 
-                            <button class="btn btn-default btn-circle btn-edit">
-                                <i class="fa fa-spin fa-refresh"></i>
+                            <button class="btn btn-default btn-circle btn-call-form-update">
+                                <i class="fa fa-refresh"></i>
                             </button>
 
-                            <button class="btn btn-default btn-circle       btn-delete">
+                            <button class="btn btn-default btn-circle btn-delete">
                                 <i class="fa fa-minus"></i>
                             </button>
                         </th>

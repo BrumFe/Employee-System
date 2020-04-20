@@ -36,13 +36,13 @@ function addElementText(positionOnTr)
     var span = document.createElement('span');
     switch(positionOnTr) {
         case 2:
-            p.classList.add('Name-'+ contEmployees);
+            p.classList.add('name-'+ contEmployees);
         break;
         case 3:
-            p.classList.add('Email-'+ contEmployees);
+            p.classList.add('email-'+ contEmployees);
         break;
         case 4:
-            span.classList.add('Age-'+ contEmployees);
+            span.classList.add('age-'+ contEmployees);
             span.classList.add('label');
             if (isAdult(contEmployees)) {
                 span.classList.add('label-success');
@@ -50,21 +50,26 @@ function addElementText(positionOnTr)
                 span.classList.add('label-danger');
             }
             return span;
-        break;
     }
     return p;
 }
 
 
-document.querySelector('.call-form-add').addEventListener('click', function() {
-    openForm();
+
+
+document.querySelector('.btn-call-form-add').addEventListener('click', function() {
+    openFormAdd();
 });
 
-document.querySelector('.hidden-form-add').addEventListener('click', function() {
-    document.querySelector('.form-add-employee').style.display = 'none';
-});
+function openFormAdd() {
+    document.getElementById('name-add').value = '';
+    document.getElementById('email-add').value = '';
+    document.getElementById('birthDate-add').value = '';
+    document.querySelector('.form-add-employee').style.display = 'block';
+}
+
 document.querySelector('.btn-add-employee').addEventListener('click', function() {
-    if (isInputNotNull() && isEmailValid()) {
+    if (isInputNotNull() && isEmailValid('add') && isEmailAlreadyInUse('add')) {
         addEmployeer();
         addElementTr();
         display(contEmployees);
@@ -73,104 +78,13 @@ document.querySelector('.btn-add-employee').addEventListener('click', function()
     }
 });
 
-document.querySelector('.btn-edit').addEventListener('click', function() {
-    for(var idUser = 0; idUser < contEmployees; idUser++) {
-        updateEmployeer(idUser);
-         display(idUser);
-    }
-});
-
-document.querySelector('.btn-delete').addEventListener('click', function() {
-    if (contEmployees != 0) {
-    var idUser = prompt('Please enter with Id user');
-    removeEmployeer(idUser);
-    }
-});
-
-function openForm() {
-    document.getElementById('Name').value = '';
-    document.getElementById('Email').value = '';
-    document.getElementById('BirthDate').value = '';
-    document.querySelector('.form-add-employee').style.display = 'block';
-}
-
-function isInputNotNull(){
-    var name, email, date;
-    document.querySelector('.Name').classList.remove('has-error');
-    document.querySelector('.Email').classList.remove('has-error');
-    document.querySelector('.Date').classList.remove('has-error');
-    name = document.getElementById('Name').value;
-    email = document.getElementById('Email').value;
-    date = document.getElementById('BirthDate').value;
-
-    if (name !== '' && email !== '' && date !== '') {
-        return true;
-    } else {
-        if (name === "") {
-            document.querySelector('.Name').classList.add('has-error');
-        }
-        if (email === "") {
-            document.querySelector('.Email').classList.add('has-error');
-        }
-        if (date === "") {
-            document.querySelector('.Date').classList.add('has-error');
-        }
-        return false;
-    }
-}
-
-function isEmailValid() {
-    document.querySelector('.Email').classList.remove('has-error');
-    document.querySelector('.help-block').style.display = 'none';
-    var email = document.getElementById('Email').value;
-    for(var i = 0; i < email.length; i++) {
-        if (email[i] === '@') {
-            return true;
-        }
-    }
-    document.querySelector('.Email').classList.add('has-error');
-    document.querySelector('.help-block').style.display = 'block';
-    return false;
-}
-
 function addEmployeer() {
     employees[contEmployees] = {};
     employees[contEmployees].userId = contEmployees;
-    employees[contEmployees].name = document.getElementById('Name').value;
-    employees[contEmployees].email = document.getElementById('Email').value;
-    employees[contEmployees].birthDate = document.getElementById('BirthDate').value;
+    employees[contEmployees].name = document.getElementById('name-add').value;
+    employees[contEmployees].email = document.getElementById('email-add').value;
+    employees[contEmployees].birthDate = document.getElementById('birthDate-add').value;
     calcAge(contEmployees);
-}
-
-function updateEmployeer(idUser) {
-    employees[idUser].name = document.querySelector('.Name-'+ idUser).value;
-    employees[idUser].email = document.querySelector('.Email-'+ idUser).value;
-    var birthDate = document.querySelector('.BirthDate-'+ idUser).value;
-    updateAge(idUser, birthDate);
-}
-
-function removeEmployeer(idUser) {
-    employees.splice(idUser, 1);
-    contEmployees--;
-    document.querySelector('.tr-'+ idUser).remove();
-    for(var j = 0; j < contEmployees; j++) {
-        employees[j].userId = j;
-        display(j);
-    }
-}
-
-function display(idUser) {
-    document.querySelector('.Name-'+ idUser).textContent = employees[idUser].name;
-    document.querySelector('.Email-'+ idUser).textContent = employees[idUser].email;
-    document.querySelector('.Age-'+ idUser).textContent = employees[idUser].age;
-}
-
-function isAdult(idUser) {
-    if (employees[idUser].age >= 18) {
-        return true;
-    } else {
-        return false;
-    }
 }
 
 function calcAge(employeeId) {
@@ -185,11 +99,179 @@ function calcAge(employeeId) {
     employees[employeeId].age = age;   
 }
 
-function updateAge(employeeId, birth) {
-    if (birth.length < 4) {
-        return;
+document.querySelector('.hidden-form-add').addEventListener('click', function() {
+    document.querySelector('.form-add-employee').style.display = 'none';
+
+    document.querySelector('.name-add').classList.remove('has-error');
+    document.querySelector('.email-add').classList.remove('has-error');
+    document.querySelector('.date-add').classList.remove('has-error');
+
+    document.querySelector('.valid-email-1-add').style.display = 'none';
+    document.querySelector('.valid-email-2-add').style.display = 'none';
+});
+
+
+
+
+document.querySelector('.btn-call-form-update').addEventListener('click', function() {
+    openFormUpdate();
+});
+
+function openFormUpdate() {
+    document.getElementById('name-update').value = '';
+    document.getElementById('email-update').value = '';
+    document.getElementById('birthDate-update').value = '';
+    document.getElementById('employeeId').value = '';
+    document.querySelector('.form-update-employee').style.display = 'block';
+    document.querySelector('.fa-refresh').classList.add('fa-spin');
+}
+
+document.querySelector('.btn-search-employee').addEventListener('click', function() {
+    document.querySelector('.display-form-update').style.display = 'block';
+    document.querySelector('.invalid-id').style.display = 'none';   
+    document.querySelector('.employeeId').classList.remove('has-error');
+    var idUser = document.getElementById('employeeId').value;
+
+    if (idUser === '' || idUser > contEmployees) {
+        document.querySelector('.employeeId').classList.add('has-error'); 
+        document.querySelector('.invalid-id').style.display = 'block';    
     } else {
-        employees[employeeId].birthDate = birth;
-        calcAge(employee);
+        searchEmployee(idUser);
     }
+});
+
+function searchEmployee(idUser) {
+    document.getElementById('name-update').value = employees[idUser].name ;
+    document.getElementById('email-update').value = employees[idUser].email ;
+    document.getElementById('birthDate-update').value = employees[idUser].birthDate;
+}
+
+document.querySelector('.btn-update-employee').addEventListener('click', function() {
+    if (isEmailValid('update') && isEmailAlreadyInUse('update') && idUser !== '') {
+        updateEmployeer(idUser);
+        display(idUser);
+        document.querySelector('.form-update-employee').style.display = 'none';
+        document.querySelector('.display-form-update').style.display = 'none';
+        document.querySelector('.fa-refresh').classList.remove('fa-spin');
+    }
+});
+
+function updateEmployeer(idUser) {
+    employees[idUser].name = document.getElementById('name-update').value;
+    employees[idUser].email = document.getElementById('email-update').value;
+    var birthDate = document.getElementById('birthDate-update').value;
+    updateAge(idUser, birthDate);
+}
+
+function updateAge(employeeId, birth) {
+    if (birth === '') {}
+    employees[employeeId].birthDate = birth;
+    calcAge(employee);
+}
+
+document.querySelector('.hidden-form-update').addEventListener('click', function() {
+    document.querySelector('.form-update-employee').style.display = 'none';
+    document.querySelector('.display-form-update').style.display = 'none';
+
+    document.querySelector('.fa-refresh').classList.remove('fa-spin');
+
+    document.querySelector('.name-update').classList.remove('has-error');
+    document.querySelector('.email-update').classList.remove('has-error');
+    document.querySelector('.date-update').classList.remove('has-error');
+
+    document.querySelector('.valid-email-1-update').style.display = 'none';
+    document.querySelector('.valid-email-2-update').style.display = 'none';
+});
+
+
+
+
+document.querySelector('.btn-delete').addEventListener('click', function() {
+    if (contEmployees != 0) {
+    var idUser = prompt('Please enter with Id user');
+    removeEmployeer(idUser);
+    }
+});
+
+function removeEmployeer(idUser) {
+    employees.splice(idUser, 1);
+    contEmployees--;
+    document.querySelector('.tr-'+ idUser).remove();
+    for(var j = 0; j < contEmployees; j++) {
+        employees[j].userId = j;
+        display(j);
+    }
+}
+
+
+
+
+function isInputNotNull(){
+    var name, email, date;
+    document.querySelector('.name-add').classList.remove('has-error');
+    document.querySelector('.email-add').classList.remove('has-error');
+    document.querySelector('.date-add').classList.remove('has-error');
+    name = document.getElementById('name-add').value;
+    email = document.getElementById('email-add').value;
+    date = document.getElementById('birthDate-add').value;
+
+    if (name !== '' && email !== '' && date !== '') {
+        return true;
+    } else {
+        if (name === "") {
+            document.querySelector('.name-add').classList.add('has-error');
+        }
+        if (email === "") {
+            document.querySelector('.email-add').classList.add('has-error');
+        }
+        if (date === "") {
+            document.querySelector('.date-add').classList.add('has-error');
+        }
+        return false;
+    }
+}
+
+function isEmailValid(switchClass) {
+    document.querySelector('.email-'+ switchClass).classList.remove('has-error');
+    document.querySelector('.valid-email-1-'+ switchClass).style.display = 'none';
+    var email = document.getElementById('email-'+ switchClass).value;
+    for(var i = 0; i < email.length; i++) {
+        if (email[i] === '@') {
+            return true;
+        }
+    }
+    document.querySelector('.email-'+ switchClass).classList.add('has-error');
+    document.querySelector('.valid-email-1-'+switchClass).style.display = 'block';
+    return false;
+}
+
+function isEmailAlreadyInUse(switchClass) {
+    document.querySelector('.email-'+ switchClass).classList.remove('has-error');
+    document.querySelector('.valid-email-2-'+ switchClass).style.display = 'none';
+    var email = document.getElementById('email-'+ switchClass).value;
+    for(var i = 0; i < contEmployees; i++) {
+        if (email === employees[i].email) {
+            document.querySelector('.email-'+ switchClass).classList.add('has-error');
+            document.querySelector('.valid-email-2-'+ switchClass).style.display = 'block';
+            return false;
+        }
+    }
+    return true;
+}
+
+function isAdult(idUser) {
+    if (employees[idUser].age >= 18) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+
+
+function display(idUser) {
+    document.querySelector('.name-'+ idUser).textContent = employees[idUser].name;
+    document.querySelector('.email-'+ idUser).textContent = employees[idUser].email;
+    document.querySelector('.age-'+ idUser).textContent = employees[idUser].age;
 }

@@ -66,10 +66,11 @@ function openFormAdd() {
     document.getElementById('email-add').value = '';
     document.getElementById('birthDate-add').value = '';
     document.querySelector('.form-add-employee').style.display = 'block';
+    document.querySelector('.')
 }
 
 document.querySelector('.btn-add-employee').addEventListener('click', function() {
-    if (isInputNotNull() && isEmailValid('add') && isEmailAlreadyInUse('add')) {
+    if (isInputNotNull() && isEmailValid('add') && isEmailAlreadyInUse()) {
         addEmployeer();
         addElementTr();
         display(contEmployees);
@@ -135,11 +136,8 @@ document.querySelector('.btn-search-employee').addEventListener('click', functio
 
     if (isIdUserValid(idUser)) {
         document.querySelector('.display-form-update').style.display = 'block';
-        searchEmployee(idUser)
-    }
-
-    document.querySelector('.invalid-id').style.display = 'block';  
-    document.querySelector('.employeeId').classList.add('has-error');   
+        searchEmployee(idUser);
+    }  
 });
 
 function searchEmployee(idUser) {
@@ -149,9 +147,17 @@ function searchEmployee(idUser) {
 }
 
 document.querySelector('.btn-update-employee').addEventListener('click', function() {
-    if (isEmailValid('update') && isEmailAlreadyInUse('update') && idUser !== '') {
+    var idUser = document.getElementById('employeeId').value;
+    if (isEmailValid('update') && idUser !== '') {
         updateEmployeer(idUser);
         display(idUser);
+        if (isAdult(idUser)) {
+            document.querySelector('.age-'+ idUser).classList.remove('label-danger');
+            document.querySelector('.age-'+ idUser).classList.add('label-success');
+        } else {
+            document.querySelector('.age-'+ idUser).classList.remove('label-success');
+            document.querySelector('.age-'+ idUser).classList.add('label-danger');
+        }
         document.querySelector('.form-update-employee').style.display = 'none';
         document.querySelector('.display-form-update').style.display = 'none';
         document.querySelector('.fa-refresh').classList.remove('fa-spin');
@@ -161,14 +167,8 @@ document.querySelector('.btn-update-employee').addEventListener('click', functio
 function updateEmployeer(idUser) {
     employees[idUser].name = document.getElementById('name-update').value;
     employees[idUser].email = document.getElementById('email-update').value;
-    var birthDate = document.getElementById('birthDate-update').value;
-    updateAge(idUser, birthDate);
-}
-
-function updateAge(employeeId, birth) {
-    if (birth === '') {}
-    employees[employeeId].birthDate = birth;
-    calcAge(employee);
+    employees[idUser].birthDate = document.getElementById('birthDate-update').value;
+    calcAge(idUser);
 }
 
 document.querySelector('.hidden-form-update').addEventListener('click', function() {
@@ -206,12 +206,16 @@ function removeEmployeer(idUser) {
 }
 
 
+
+
 function isIdUserValid(idUser) {
     for (var i = 0; i < contEmployees; i++) {
-        if (idUser == employees[i].idUser) {
+        if (parseInt(idUser) === employees[i].userId) {
             return true;
         }
     }
+    document.querySelector('.invalid-id').style.display = 'block';  
+    document.querySelector('.employeeId').classList.add('has-error'); 
     return false;
 }
 
@@ -254,14 +258,14 @@ function isEmailValid(switchClass) {
     return false;
 }
 
-function isEmailAlreadyInUse(switchClass) {
-    document.querySelector('.email-'+ switchClass).classList.remove('has-error');
-    document.querySelector('.valid-email-2-'+ switchClass).style.display = 'none';
-    var email = document.getElementById('email-'+ switchClass).value;
+function isEmailAlreadyInUse() {
+    document.querySelector('.email-add').classList.remove('has-error');
+    document.querySelector('.valid-email-2-add').style.display = 'none';
+    var email = document.getElementById('email-add').value;
     for(var i = 0; i < contEmployees; i++) {
         if (email === employees[i].email) {
-            document.querySelector('.email-'+ switchClass).classList.add('has-error');
-            document.querySelector('.valid-email-2-'+ switchClass).style.display = 'block';
+            document.querySelector('.email-add').classList.add('has-error');
+            document.querySelector('.valid-email-2-add').style.display = 'block';
             return false;
         }
     }

@@ -1,8 +1,7 @@
 'use strict'
 
-//var contEmployees = 0;
 
-var employees, contEmployees, birthDate;
+var employees, contEmployees, birthDate, idUser;
 employees = [];
 contEmployees = employees.length;
 
@@ -44,11 +43,6 @@ function addElementText(positionOnTr)
         case 4:
             span.classList.add('age-'+ contEmployees);
             span.classList.add('label');
-            if (isAdult(contEmployees)) {
-                span.classList.add('label-success');
-            } else {
-                span.classList.add('label-danger');
-            }
             return span;
     }
     return p;
@@ -66,13 +60,13 @@ function openFormAdd() {
     document.getElementById('email-add').value = '';
     document.getElementById('birthDate-add').value = '';
     document.querySelector('.form-add-employee').style.display = 'block';
-    document.querySelector('.')
 }
 
 document.querySelector('.btn-add-employee').addEventListener('click', function() {
     if (isInputNotNull() && isEmailValid('add') && isEmailAlreadyInUse()) {
         addEmployeer();
         addElementTr();
+        isAdult(contEmployees);
         display(contEmployees);
         document.querySelector('.form-add-employee').style.display = 'none';
         contEmployees = employees.length;
@@ -122,19 +116,19 @@ function openFormUpdate() {
     document.getElementById('name-update').value = '';
     document.getElementById('email-update').value = '';
     document.getElementById('birthDate-update').value = '';
-    document.getElementById('employeeId').value = '';
+    document.getElementById('employeeId-update').value = '';
     document.querySelector('.form-update-employee').style.display = 'block';
-    document.querySelector('.invalid-id').style.display = 'none';   
-    document.querySelector('.employeeId').classList.remove('has-error');
+    document.querySelector('.invalid-id-update').style.display = 'none';   
+    document.querySelector('.employeeId-update').classList.remove('has-error');
     document.querySelector('.fa-refresh').classList.add('fa-spin');
 }
 
 document.querySelector('.btn-search-employee').addEventListener('click', function() {
-    document.querySelector('.invalid-id').style.display = 'none';   
-    document.querySelector('.employeeId').classList.remove('has-error');
-    var idUser = document.getElementById('employeeId').value;
+    document.querySelector('.invalid-id-update').style.display = 'none';   
+    document.querySelector('.employeeId-update').classList.remove('has-error');
+    var idUser = document.getElementById('employeeId-update').value;
 
-    if (isIdUserValid(idUser)) {
+    if (isIdUserValid(idUser, 'update')) {
         document.querySelector('.display-form-update').style.display = 'block';
         searchEmployee(idUser);
     }  
@@ -147,17 +141,11 @@ function searchEmployee(idUser) {
 }
 
 document.querySelector('.btn-update-employee').addEventListener('click', function() {
-    var idUser = document.getElementById('employeeId').value;
-    if (isEmailValid('update') && idUser !== '') {
+    idUser = document.getElementById('employeeId-update').value;
+    if (isEmailValid('update')){
         updateEmployeer(idUser);
         display(idUser);
-        if (isAdult(idUser)) {
-            document.querySelector('.age-'+ idUser).classList.remove('label-danger');
-            document.querySelector('.age-'+ idUser).classList.add('label-success');
-        } else {
-            document.querySelector('.age-'+ idUser).classList.remove('label-success');
-            document.querySelector('.age-'+ idUser).classList.add('label-danger');
-        }
+        isAdult(idUser);
         document.querySelector('.form-update-employee').style.display = 'none';
         document.querySelector('.display-form-update').style.display = 'none';
         document.querySelector('.fa-refresh').classList.remove('fa-spin');
@@ -188,10 +176,22 @@ document.querySelector('.hidden-form-update').addEventListener('click', function
 
 
 
-document.querySelector('.btn-delete').addEventListener('click', function() {
-    if (contEmployees != 0) {
-    var idUser = prompt('Please enter with Id user');
-    removeEmployeer(idUser);
+document.querySelector('.btn-call-form-remove').addEventListener('click', function() {
+    openFormRemove();
+});
+
+function openFormRemove() {
+    document.getElementById('employeeId-remove').value = '';
+    document.querySelector('.form-remove-employee').style.display = 'block';
+    document.querySelector('.invalid-id-remove').style.display = 'none';   
+    document.querySelector('.employeeId-remove').classList.remove('has-error');
+}
+
+document.querySelector('.btn-remove-employee').addEventListener('click', function() {
+    idUser = document.getElementById('employeeId-remove').value;
+    if (isIdUserValid(idUser, 'remove')) {
+        removeEmployeer(idUser);
+        document.querySelector('.form-remove-employee').style.display = 'none';
     }
 });
 
@@ -205,17 +205,36 @@ function removeEmployeer(idUser) {
     }
 }
 
+document.querySelector('.hidden-form-remove').addEventListener('click', function() {
+    document.querySelector('.form-remove-employee').style.display = 'none';
+});
 
 
 
-function isIdUserValid(idUser) {
+
+function calcAge(employeeId) {
+    var dateToday = new Date();
+    var birthDate = new Date(employees[employeeId].birthDate);
+    var age = dateToday.getFullYear() - birthDate.getFullYear();
+    var month = dateToday.getMonth() - birthDate.getMonth();
+    var day = dateToday.getDay() - birthDate.getDay();
+    if (month < 0 || day < 0|| (day === 0 || month === 0 && dateToday.getDate() < birthDate.getDate())) {
+        age--;
+    }
+    employees[employeeId].age = age;   
+}
+
+
+
+
+function isIdUserValid(idUser, switchClass) {
     for (var i = 0; i < contEmployees; i++) {
         if (parseInt(idUser) === employees[i].userId) {
             return true;
         }
     }
-    document.querySelector('.invalid-id').style.display = 'block';  
-    document.querySelector('.employeeId').classList.add('has-error'); 
+    document.querySelector('.invalid-id-'+ switchClass).style.display = 'block';  
+    document.querySelector('.employeeId-'+ switchClass).classList.add('has-error'); 
     return false;
 }
 
@@ -274,8 +293,12 @@ function isEmailAlreadyInUse() {
 
 function isAdult(idUser) {
     if (employees[idUser].age >= 18) {
+        document.querySelector('.age-'+ idUser).classList.add('label-success');
+        document.querySelector('.age-'+ idUser).classList.remove('label-danger');
         return true;
     } else {
+        document.querySelector('.age-'+ idUser).classList.add('label-danger');
+        document.querySelector('.age-'+ idUser).classList.remove('label-success');
         return false;
     }
 }

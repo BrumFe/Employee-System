@@ -264,10 +264,10 @@
                 <h3 class="box-title m-b-30">Update Employee</h3>
                 <div class="row">
                     <div class="col-md-12 form-material floating-labels">
-                        <div class="form-group m-b-40 employeeId">
-                            <input type="text" class="form-control" id="employeeId" required=""><span class="highlight"></span> <span class="bar"></span>
+                        <div class="form-group m-b-40 employeeId-update">
+                            <input type="text" class="form-control" id="employeeId-update" required=""><span class="highlight"></span> <span class="bar"></span>
                             <label for="Name">Employee Id</label>
-                            <span class="help-block invalid-id" style="display: none;">Invalid employee ID!</span>
+                            <span class="help-block invalid-id-update" style="display: none;">Invalid employee ID!</span>
                         </div>
                         <div class="form-group m-b-40"> 
                             <button type="submit" class="fcbtn btn btn-outline btn-1d btn-info waves-effect waves-light m-r-10 btn-search-employee">Search Employee</button>
@@ -296,6 +296,29 @@
             </div>
         </div>
     </div>
+
+    <div class="row form-remove-employee" style="display:none;">
+        <div class="col-sm-12">
+            <div class="white-box p-l-20 p-r-20">
+                <button type="button" class="btn btn-danger btn-circle hidden-form-remove">
+                    <i class="fa fa-times"></i>
+                </button>
+                <h3 class="box-title m-b-30">Remove Employee</h3>
+                <div class="row">
+                    <div class="col-md-12 form-material floating-labels">
+                        <div class="form-group m-b-40 employeeId-remove">
+                            <input type="text" class="form-control" id="employeeId-remove" required=""><span class="highlight"></span> <span class="bar"></span>
+                            <label for="Name">Employee Id</label>
+                            <span class="help-block invalid-id-remove" style="display: none;">Invalid employee ID!</span>
+                        </div>
+                        <div class="form-group m-b-40"> 
+                            <button type="submit" class="fcbtn btn btn-outline btn-1d btn-info waves-effect waves-light m-r-10 btn-remove-employee">Remove Employee</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <div class="white-box">
         <h3 class="box-title">Employeers</h3>
@@ -312,8 +335,8 @@
                                 <i class="fa fa-refresh"></i>
                             </button>
 
-                            <button class="btn btn-default btn-circle btn-delete">
-                                <i class="fa fa-minus"></i>
+                            <button class="btn btn-default btn-circle btn-call-form-remove">
+                                <i class="fa fa-trash-o"></i>
                             </button>
                         </th>
                         <th>#</th>

@@ -15,7 +15,7 @@ function addElementTr()
 
 function addElementTd(tr)
 { 
-    for(var i = 0; i < 6; i++) {
+    for(var i = 0; i < 5; i++) {
         var td = document.createElement('td');  
         if (i === 0) {
             td.classList.add('id-'+ contEmployees);
@@ -23,7 +23,9 @@ function addElementTd(tr)
         } else if (i < 4) {
             td.appendChild(addElementText(i));
         } else {
-            td.appendChild(createButton(i));
+            for(var j = 0; j < 2; j++) {
+                td.appendChild(createButton(j));
+            }
         }
         tr.appendChild(td);
     }
@@ -53,15 +55,16 @@ function createButton(positionOnTr) {
     var icon = document.createElement('i');
 
     button.classList.add('btn');
-    button.classList.add('btn-default');
     button.classList.add('btn-circle');
 
     icon.classList.add('fa');
 
-    if (positionOnTr === 5) {
+    if (positionOnTr === 0) {
+        button.classList.add('btn-success');
         button.classList.add('btn-call-form-update');
         icon.classList.add('fa-pencil');
     } else {
+        button.classList.add('btn-warning');
         button.classList.add('btn-remove');
         icon.classList.add('fa-trash-o');
     }
@@ -132,10 +135,9 @@ document.querySelector('.hidden-form-add').addEventListener('click', function() 
 
 
 
-
-document.querySelector('.btn-call-form-update').addEventListener('click', function() {
+document.querySelector('.btn-call-form-update').onclick = function () {
     openFormUpdate();
-});
+};
 
 function openFormUpdate() {
     document.getElementById('name-update').value = '';
@@ -146,10 +148,7 @@ function openFormUpdate() {
     document.querySelector('.form-update-employee').style.display = 'block';
     document.querySelector('.form-add-employee').style.display = 'none';
     document.querySelector('.form-remove-employee').style.display = 'none';
-    document.querySelector('.invalid-id-update').style.display = 'none';   
-
-    document.querySelector('.valid-id-update').classList.remove('has-error');
-    document.querySelector('.fa-refresh').classList.add('fa-spin');
+    document.querySelector('.invalid-id-update').style.display = 'none';
 }
 
 document.querySelector('.btn-search-employee').addEventListener('click', function() {

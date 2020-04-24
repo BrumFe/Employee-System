@@ -264,32 +264,22 @@
                 <h3 class="box-title m-b-30">Update Employee</h3>
                 <div class="row">
                     <div class="col-md-12 form-material floating-labels">
-                        <div class="form-group m-b-40 valid-id-update">
-                            <input type="text" class="form-control" id="employee-id-update" required=""><span class="highlight"></span> <span class="bar"></span>
-                            <label for="Name">Employee Id</label>
-                            <span class="help-block invalid-id-update" style="display: none;">Invalid employee ID!</span>
+                        <div class="form-group m-b-40 name-update">
+                            <input type="text" class="form-control" id="name-update" required=""><span class="highlight"></span> <span class="bar"></span>
+                            <label for="Name">Employee Name</label>
+                        </div>
+                        <div class="form-group m-b-40 email-update">
+                            <input type="text" class="form-control" id="email-update" required=""><span class="highlight"></span> <span class="bar"></span>
+                            <label for="Email">Employee Email</label>
+                            <span class="help-block valid-email-1-update" style="display: none;">Email invalid</span>
+                            <span class="help-block valid-email-2-update" style="display: none;">Email is already in use!</span>
+                        </div>
+                        <div class="form-group m-b-40 date-update">
+                            <input type="date" class="form-control" id="birthDate-update" required=""><span class="highlight"></span>
+                            <span class="bar"></span>
                         </div>
                         <div class="form-group m-b-40"> 
-                            <button type="submit" class="fcbtn btn btn-outline btn-1d btn-info waves-effect waves-light m-r-10 btn-search-employee">Search Employee</button>
-                        </div>
-                        <div class="display-form-update" style="display: none;">
-                            <div class="form-group m-b-40 name-update">
-                                <input type="text" class="form-control" id="name-update" required=""><span class="highlight"></span> <span class="bar"></span>
-                                <label for="Name">Employee Name</label>
-                            </div>
-                            <div class="form-group m-b-40 email-update">
-                                <input type="text" class="form-control" id="email-update" required=""><span class="highlight"></span> <span class="bar"></span>
-                                <label for="Email">Employee Email</label>
-                                <span class="help-block valid-email-1-update" style="display: none;">Email invalid</span>
-                                <span class="help-block valid-email-2-update" style="display: none;">Email is already in use!</span>
-                            </div>
-                            <div class="form-group m-b-40 date-update">
-                                <input type="date" class="form-control" id="birthDate-update" required=""><span class="highlight"></span>
-                                <span class="bar"></span>
-                            </div>
-                            <div class="form-group m-b-40"> 
-                                <button type="submit" class="fcbtn btn btn-outline btn-1d btn-success waves-effect waves-light m-r-10 btn-update-employee">Update Employee</button>
-                            </div>
+                            <button type="submit" class="fcbtn btn btn-outline btn-1d btn-success waves-effect waves-light m-r-10 btn-update-employee">Update Employee</button>
                         </div>
                     </div>
                 </div>

@@ -1,11 +1,10 @@
 'use strict'
 
 
-var employees, contEmployees, birthDate, employeeId;
+var employees, contEmployees, birthDate, employeePosition, employeeNumberId;
 employees = [];
-contEmployees = employees.length;
-
-
+contEmployees = 0;
+employeePosition = employees.length;
 
 
 function addElementTr()
@@ -64,21 +63,24 @@ function createButton(positionOnTr) {
 
     if (positionOnTr === 0) {
         button.classList.add('btn-success');
-        button.classList.add('btn-call-form-update');
+        button.classList.add('btn-update');
+        button.value = contEmployees;
         button.onclick = function() {
-            openFormUpdate(contEmployees);
+            openFormUpdate(button.value);
         }
         icon.classList.add('fa-pencil');
     } else {
         button.classList.add('btn-warning');
         button.classList.add('btn-remove');
+        button.value = employeePosition;
+        button.onclick = function() {
+            removeEmployeer(button.value);
+        }
         icon.classList.add('fa-trash-o');
     }
     button.appendChild(icon);
     return button;
 }
-
-
 
 
 document.querySelector('.btn-call-form-add').addEventListener('click', function() {
@@ -92,28 +94,27 @@ function openFormAdd() {
 
     document.querySelector('.form-add-employee').style.display = 'block';
     document.querySelector('.form-update-employee').style.display = 'none';
-    document.querySelector('.form-remove-employee').style.display = 'none';
- 
 }
 
 document.querySelector('.btn-add-employee').addEventListener('click', function() {
-    if (isInputNotNull() && isEmailValid('add') && isEmailAlreadyInUse()) {
+    if (isInputNotNull() && isEmailValid('add')) {
         addElementTr();
         addEmployeer();
-        isAdult(contEmployees);
-        display(contEmployees);
-        contEmployees = employees.length;
+        isAdult(employeePosition);
+        display(employeePosition);
         document.querySelector('.form-add-employee').style.display = 'none';
+        contEmployees++;
+        employeePosition = employees.length;
     }
 });
 
 function addEmployeer() {
-    employees[contEmployees] = {};
-    employees[contEmployees].employeeId = contEmployees;
-    employees[contEmployees].name = document.getElementById('name-add').value;
-    employees[contEmployees].email = document.getElementById('email-add').value;
-    employees[contEmployees].birthDate = document.getElementById('birthDate-add').value;
-    calcAge(contEmployees);
+    employees[employeePosition] = {};
+    employees[employeePosition].employeeId = contEmployees;
+    employees[employeePosition].name = document.getElementById('name-add').value;
+    employees[employeePosition].email = document.getElementById('email-add').value;
+    employees[employeePosition].birthDate = document.getElementById('birthDate-add').value;
+    calcAge(employeePosition);
 }
 
 document.querySelector('.hidden-form-add').addEventListener('click', function() {
@@ -131,32 +132,31 @@ document.querySelector('.hidden-form-add').addEventListener('click', function() 
 
 
 function openFormUpdate(idEmployee) {
-    document.getElementById('name-update').value = '';
-    document.getElementById('email-update').value = '';
-    document.getElementById('birthDate-update').value = '';
-
-    document.querySelector('.form-update-employee').style.display = 'block';
-    document.querySelector('.form-add-employee').style.display = 'none';
-    document.querySelector('.form-remove-employee').style.display = 'none';
-
     searchEmployee(idEmployee);
-    employeeId = idEmployee;
+    employeeNumberId = idEmployee;
+    document.querySelector('.form-update-employee').style.display = 'block';
+    document.querySelector('.form-remove-employee').style.display = 'none';
 }
 
 function searchEmployee(idEmployee) {
-    document.getElementById('name-update').value = employees[idEmployee].name ;
-    document.getElementById('email-update').value = employees[idEmployee].email ;
-    document.getElementById('birthDate-update').value = employees[idEmployee].birthDate;
+    for (var i = 0; i < employees.length; i++) {
+        if (parseInt(idEmployee) === employees[i].employeeId) {
+            document.getElementById('name-update').value = employees[i].name;
+            document.getElementById('email-update').value = employees[i].email;
+            document.getElementById('birthDate-update').value = employees[i].birthDate;
+            console.log('yeah');
+        } else {
+            console.log ('oh no!');
+        }
+    }
 }
 
 document.querySelector('.btn-update-employee').addEventListener('click', function() {
     if (isEmailValid('update')){
-        updateEmployeer(employeeId);
-        display(employeeId);
-        isAdult(employeeId);
+        updateEmployeer(employeeNumberId);
+        display(employeeNumberId);
+        isAdult(employeeNumberId);
         document.querySelector('.form-update-employee').style.display = 'none';
-        document.querySelector('.display-form-update').style.display = 'none';
-        document.querySelector('.fa-refresh').classList.remove('fa-spin');
     }
 });
 
@@ -181,39 +181,11 @@ document.querySelector('.hidden-form-update').addEventListener('click', function
 
 
 
-/*
-document.querySelector('.btn-call-form-remove').addEventListener('click', function() {
-    openFormRemove();
-});
-
-function openFormRemove() {
-    document.getElementById('employee-id-remove').value = '';
-
-    document.querySelector('.form-remove-employee').style.display = 'block';
-    document.querySelector('.form-update-employee').style.display = 'none';
-    document.querySelector('.form-add-employee').style.display = 'none';
- 
-
-    document.querySelector('.invalid-id-remove').style.display = 'none';   
-    document.querySelector('.valid-id-remove').classList.remove('has-error');
-}
-
-document.querySelector('.btn-remove-employee').addEventListener('click', function() {
-    employeeId = document.getElementById('employee-id-remove').value;
-    if (isIdUserValid(employeeId, 'remove')) {
-        removeEmployeer(employeeId);
-        document.querySelector('.form-remove-employee').style.display = 'none';
-    }
-});
-
 function removeEmployeer(employeeId) {
-
+    employees.splice(employeeId, 1);
+    document.querySelector('.tr-'+ employeeId).remove();
+    employeePosition = employees.length;
 }
-
-document.querySelector('.hidden-form-remove').addEventListener('click', function() {
-    document.querySelector('.form-remove-employee').style.display = 'none';
-});
-*/
 
 
 
@@ -285,19 +257,6 @@ function isEmailValid(switchClass) {
     return false;
 }
 
-function isEmailAlreadyInUse() {
-    document.querySelector('.email-add').classList.remove('has-error');
-    document.querySelector('.valid-email-2-add').style.display = 'none';
-    var email = document.getElementById('email-add').value;
-    for(var i = 0; i < contEmployees; i++) {
-        if (email === employees[i].email) {
-            document.querySelector('.email-add').classList.add('has-error');
-            document.querySelector('.valid-email-2-add').style.display = 'block';
-            return false;
-        }
-    }
-    return true;
-}
 
 
 

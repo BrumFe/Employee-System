@@ -182,9 +182,13 @@ document.querySelector('.hidden-form-update').addEventListener('click', function
 
 
 function removeEmployeer(employeeId) {
-    employees.splice(employeeId, 1);
-    document.querySelector('.tr-'+ employeeId).remove();
-    employeePosition = employees.length;
+    for (var i = 0; i < employees.length; i++) {
+        if (parseInt(employeeId) === employees[i].employeeId) {
+            employees.splice(i, 1);
+            document.querySelector('.tr-'+ employeeId).remove();
+            employeePosition = employees.length;
+        }
+    }
 }
 
 
@@ -262,7 +266,7 @@ function isEmailValid(switchClass) {
 
 
 function display(employeeId) {
-    document.querySelector('.name-'+ employeeId).textContent = employees[employeeId].name;
-    document.querySelector('.email-'+ employeeId).textContent = employees[employeeId].email;
-    document.querySelector('.age-'+ employeeId).textContent = employees[employeeId].age;
+    document.querySelector('.name-'+ contEmployees).textContent = employees[employeeId].name;
+    document.querySelector('.email-'+ contEmployees).textContent = employees[employeeId].email;
+    document.querySelector('.age-'+ contEmployees).textContent = employees[employeeId].age;
 }

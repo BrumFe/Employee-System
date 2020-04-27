@@ -1,16 +1,20 @@
 'use strict'
 
 
-var employees, contEmployees, birthDate, employeePosition, employeeNumberId;
+
+
+var employees, birthDate, contEmployees, employeeNumberId, employeePosition, valueBtnUpdate;
 employees = [];
+
 contEmployees = 0;
 employeePosition = employees.length;
+
 
 
 function addElementTr()
 {
     var tr = document.createElement('tr');
-    tr.classList.add('tr-'+ contEmployees);
+    tr.id = ('tr-'+ contEmployees);
     document.getElementById('tbody').appendChild(tr);
     addElementTd(tr);
 }
@@ -72,7 +76,7 @@ function createButton(positionOnTr) {
     } else {
         button.classList.add('btn-warning');
         button.classList.add('btn-remove');
-        button.value = employeePosition;
+        button.value = contEmployees;
         button.onclick = function() {
             removeEmployeer(button.value);
         }
@@ -81,6 +85,8 @@ function createButton(positionOnTr) {
     button.appendChild(icon);
     return button;
 }
+
+
 
 
 document.querySelector('.btn-call-form-add').addEventListener('click', function() {
@@ -100,7 +106,6 @@ document.querySelector('.btn-add-employee').addEventListener('click', function()
     if (isInputNotNull() && isEmailValid('add')) {
         addElementTr();
         addEmployeer();
-        isAdult(employeePosition);
         display(employeePosition);
         document.querySelector('.form-add-employee').style.display = 'none';
         contEmployees++;
@@ -115,6 +120,7 @@ function addEmployeer() {
     employees[employeePosition].email = document.getElementById('email-add').value;
     employees[employeePosition].birthDate = document.getElementById('birthDate-add').value;
     calcAge(employeePosition);
+    isAdult(employeePosition);
 }
 
 document.querySelector('.hidden-form-add').addEventListener('click', function() {
@@ -132,21 +138,19 @@ document.querySelector('.hidden-form-add').addEventListener('click', function() 
 
 
 function openFormUpdate(idEmployee) {
-    searchEmployee(idEmployee);
-    employeeNumberId = idEmployee;
+    valueBtnUpdate = idEmployee;
+    employeeNumberId = searchEmployee(idEmployee);
     document.querySelector('.form-update-employee').style.display = 'block';
     document.querySelector('.form-remove-employee').style.display = 'none';
 }
 
 function searchEmployee(idEmployee) {
-    for (var i = 0; i < employees.length; i++) {
+    for (var i = 0; i < employeePosition; i++) {
         if (parseInt(idEmployee) === employees[i].employeeId) {
             document.getElementById('name-update').value = employees[i].name;
             document.getElementById('email-update').value = employees[i].email;
             document.getElementById('birthDate-update').value = employees[i].birthDate;
-            console.log('yeah');
-        } else {
-            console.log ('oh no!');
+            return i;
         }
     }
 }
@@ -154,17 +158,17 @@ function searchEmployee(idEmployee) {
 document.querySelector('.btn-update-employee').addEventListener('click', function() {
     if (isEmailValid('update')){
         updateEmployeer(employeeNumberId);
-        display(employeeNumberId);
-        isAdult(employeeNumberId);
+        displayUpdate(employeeNumberId);
         document.querySelector('.form-update-employee').style.display = 'none';
     }
 });
 
 function updateEmployeer(employeeId) {
-    employees[employeeId].name = document.getElementById('name-update').value;
-    employees[employeeId].email = document.getElementById('email-update').value;
-    employees[employeeId].birthDate = document.getElementById('birthDate-update').value;
-    calcAge(employeeId);
+        employees[employeeId].name = document.getElementById('name-update').value;
+        employees[employeeId].email = document.getElementById('email-update').value;
+        employees[employeeId].birthDate = document.getElementById('birthDate-update').value;
+        calcAge(employeeId);
+        isAdultUpdate(employeeId);
 }
 
 document.querySelector('.hidden-form-update').addEventListener('click', function() {
@@ -182,10 +186,10 @@ document.querySelector('.hidden-form-update').addEventListener('click', function
 
 
 function removeEmployeer(employeeId) {
-    for (var i = 0; i < employees.length; i++) {
+    for (var i = 0; i < employeePosition; i++) {
         if (parseInt(employeeId) === employees[i].employeeId) {
             employees.splice(i, 1);
-            document.querySelector('.tr-'+ employeeId).remove();
+            document.getElementById('tr-'+ employeeId).remove();
             employeePosition = employees.length;
         }
     }
@@ -208,16 +212,27 @@ function calcAge(employeeId) {
 
 function isAdult(employeeId) {
     if (employees[employeeId].age >= 18) {
-        document.querySelector('.age-'+ employeeId).classList.add('label-success');
-        document.querySelector('.age-'+ employeeId).classList.remove('label-danger');
+        document.querySelector('.age-'+ contEmployees).classList.add('label-success');
+        document.querySelector('.age-'+ contEmployees).classList.remove('label-danger');
         return true;
     } else {
-        document.querySelector('.age-'+ employeeId).classList.add('label-danger');
-        document.querySelector('.age-'+ employeeId).classList.remove('label-success');
+        document.querySelector('.age-'+ contEmployees).classList.add('label-danger');
+        document.querySelector('.age-'+ contEmployees).classList.remove('label-success');
         return false;
-    }
+    }  
 }
 
+function isAdultUpdate(employeeId) {
+    if (employees[employeeId].age >= 18) {
+        document.querySelector('.age-'+ valueBtnUpdate).classList.add('label-success');
+        document.querySelector('.age-'+ valueBtnUpdate).classList.remove('label-danger');
+        return true;
+    } else {
+        document.querySelector('.age-'+ valueBtnUpdate).classList.add('label-danger');
+        document.querySelector('.age-'+ valueBtnUpdate).classList.remove('label-success');
+        return false;
+    }  
+}
 
 
 
@@ -269,4 +284,9 @@ function display(employeeId) {
     document.querySelector('.name-'+ contEmployees).textContent = employees[employeeId].name;
     document.querySelector('.email-'+ contEmployees).textContent = employees[employeeId].email;
     document.querySelector('.age-'+ contEmployees).textContent = employees[employeeId].age;
+}
+function displayUpdate(employeeId) {
+        document.querySelector('.name-'+ valueBtnUpdate).textContent = employees[employeeId].name;
+        document.querySelector('.email-'+ valueBtnUpdate).textContent = employees[employeeId].email;
+        document.querySelector('.age-'+ valueBtnUpdate).textContent = employees[employeeId].age;  
 }

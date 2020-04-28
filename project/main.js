@@ -3,7 +3,7 @@
 
 
 
-var employees, birthDate, contEmployees, employeeNumberId, employeePosition, valueBtnUpdate;
+var employees, birthDate, contEmployees, employeeNumberId, employeePosition, valueIdUpdate;
 employees = [];
 
 contEmployees = 0;
@@ -138,10 +138,16 @@ document.querySelector('.hidden-form-add').addEventListener('click', function() 
 
 
 function openFormUpdate(idEmployee) {
-    valueBtnUpdate = idEmployee;
+    valueIdUpdate = idEmployee;
     employeeNumberId = searchEmployee(idEmployee);
+
     document.querySelector('.form-update-employee').style.display = 'block';
     document.querySelector('.form-remove-employee').style.display = 'none';
+
+    document.querySelector('.name-update').classList.remove('has-error');
+    document.querySelector('.email-update').classList.remove('has-error');
+    document.querySelector('.date-update').classList.remove('has-error');
+
 }
 
 function searchEmployee(idEmployee) {
@@ -174,10 +180,6 @@ function updateEmployeer(employeeId) {
 document.querySelector('.hidden-form-update').addEventListener('click', function() {
     document.querySelector('.form-update-employee').style.display = 'none';
 
-    document.querySelector('.name-update').classList.remove('has-error');
-    document.querySelector('.email-update').classList.remove('has-error');
-    document.querySelector('.date-update').classList.remove('has-error');
-
     document.querySelector('.valid-email-1-update').style.display = 'none';
     document.querySelector('.valid-email-2-update').style.display = 'none';
 });
@@ -191,6 +193,7 @@ function removeEmployeer(employeeId) {
             employees.splice(i, 1);
             document.getElementById('tr-'+ employeeId).remove();
             employeePosition = employees.length;
+            document.querySelector('.form-update-employee').style.display = 'none';
         }
     }
 }
@@ -224,12 +227,12 @@ function isAdult(employeeId) {
 
 function isAdultUpdate(employeeId) {
     if (employees[employeeId].age >= 18) {
-        document.querySelector('.age-'+ valueBtnUpdate).classList.add('label-success');
-        document.querySelector('.age-'+ valueBtnUpdate).classList.remove('label-danger');
+        document.querySelector('.age-'+ valueIdUpdate).classList.add('label-success');
+        document.querySelector('.age-'+ valueIdUpdate).classList.remove('label-danger');
         return true;
     } else {
-        document.querySelector('.age-'+ valueBtnUpdate).classList.add('label-danger');
-        document.querySelector('.age-'+ valueBtnUpdate).classList.remove('label-success');
+        document.querySelector('.age-'+ valueIdUpdate).classList.add('label-danger');
+        document.querySelector('.age-'+ valueIdUpdate).classList.remove('label-success');
         return false;
     }  
 }
@@ -239,9 +242,15 @@ function isAdultUpdate(employeeId) {
 
 function isInputNotNull(){
     var name, email, date;
+    
     document.querySelector('.name-add').classList.remove('has-error');
     document.querySelector('.email-add').classList.remove('has-error');
     document.querySelector('.date-add').classList.remove('has-error');
+
+    document.querySelector('.name-null').style.display = 'none';
+    document.querySelector('.email-null').style.display = 'none';
+    document.querySelector('.birthdate-null').style.display = 'none';
+
     name = document.getElementById('name-add').value;
     email = document.getElementById('email-add').value;
     date = document.getElementById('birthDate-add').value;
@@ -251,12 +260,15 @@ function isInputNotNull(){
     } else {
         if (name === "") {
             document.querySelector('.name-add').classList.add('has-error');
+            document.querySelector('.name-null').style.display = 'block';
         }
         if (email === "") {
             document.querySelector('.email-add').classList.add('has-error');
+            document.querySelector('.email-null').style.display = 'block';
         }
         if (date === "") {
             document.querySelector('.date-add').classList.add('has-error');
+            document.querySelector('.birthdate-null').style.display = 'block';
         }
         return false;
     }
@@ -286,7 +298,7 @@ function display(employeeId) {
     document.querySelector('.age-'+ contEmployees).textContent = employees[employeeId].age;
 }
 function displayUpdate(employeeId) {
-        document.querySelector('.name-'+ valueBtnUpdate).textContent = employees[employeeId].name;
-        document.querySelector('.email-'+ valueBtnUpdate).textContent = employees[employeeId].email;
-        document.querySelector('.age-'+ valueBtnUpdate).textContent = employees[employeeId].age;  
+        document.querySelector('.name-'+ valueIdUpdate).textContent = employees[employeeId].name;
+        document.querySelector('.email-'+ valueIdUpdate).textContent = employees[employeeId].email;
+        document.querySelector('.age-'+ valueIdUpdate).textContent = employees[employeeId].age;  
 }
